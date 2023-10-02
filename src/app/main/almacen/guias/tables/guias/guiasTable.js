@@ -1,0 +1,269 @@
+/* eslint-disable no-nested-ternary */
+
+import Moment from 'moment';
+import 'moment/locale/es';
+
+import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+
+import _ from '@lodash';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import withRouter from '@fuse/core/withRouter';
+import FuseLoading from '@fuse/core/FuseLoading';
+import {
+	getGuias,
+	selectGuias,
+	resetTabla,
+	anularGuia,
+} from 'app/main/almacen/store/guias/guias/guiasSlice';
+import GuiasTableHead from './guiasTableHeader';
+
+function GuiasTable(props) {
+	const { setOpenModal, setDataModal } = props;
+
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const ingresos = useSelector(selectGuias);
+	const totalIngresos = useSelector(({ almacen }) => almacen.guias.total);
+	const searchText = useSelector(({ almacen }) => almacen.guias.searchText);
+
+	const [loading, setLoading] = useState(true);
+	const [selected, setSelected] = useState([]);
+	const [data, setData] = useState(ingresos);
+	const [page, setPage] = useState(0);
+	const [rowsPerPage, setRowsPerPage] = useState(10);
+	const [order, setOrder] = useState({
+		direction: 'asc',
+		id: 'Nota',
+	});
+
+	const [busquedaTemp, setBusqeudaTemp] = useState('');
+
+	useEffect(() => {
+		return () => {
+			dispatch(resetTabla());
+		};
+	}, []);
+
+	useEffect(() => {
+		let tipoBusqueda = 'agregar';
+		if (busquedaTemp !== searchText) {
+			setBusqeudaTemp(searchText);
+			tipoBusqueda = 'nuevaBusqueda';
+			setPage(0);
+		}
+
+		dispatch(
+			getGuias({
+				offset: page * rowsPerPage,
+				limit: rowsPerPage,
+				busqueda: searchText,
+				tipoBusqueda,
+			})
+		).then(() => setLoading(false));
+	}, [dispatch, page, rowsPerPage, searchText]);
+
+	useEffect(() => {
+		setData(ingresos);
+	}, [ingresos]);
+
+	function handleRequestSort(event, property) {
+		const id = property;
+		let direction = 'desc';
+
+		if (order.id === property && order.direction === 'desc') {
+			direction = 'asc';
+		}
+
+		setOrder({
+			direction,
+			id,
+		});
+	}
+
+	function handleSelectAllClick(event) {
+		if (event.target.checked) {
+			setSelected(data.map(n => n.id));
+			return;
+		}
+		setSelected([]);
+	}
+
+	function handleDeselect() {
+		setSelected([]);
+	}
+
+	function handleChangePage(event, value) {
+		setPage(value);
+	}
+
+	function handleChangeRowsPerPage(event) {
+		setRowsPerPage(event.target.value);
+	}
+
+	if (loading) {
+		return <FuseLoading />;
+	}
+
+	if (data.length === 0) {
+		return (
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1, transition: { delay: 0.1 } }}
+				className="flex flex-1 items-center justify-center h-full"
+			>
+				<Typography color="textSecondary" variant="h5">
+					No hay Guías!
+				</Typography>
+			</motion.div>
+		);
+	}
+
+	const formatDate = date => {
+		const fecha = Moment(date).locale('es');
+		/* return fecha.format('DD [de] MMMM [del] YYYY'); */
+		return fecha.format('DD/MM/YYYY');
+	};
+
+	async function anularAvio(item) {
+		try {
+			const error = await dispatch(
+				anularGuia({
+					id: item.id,
+					offset: page * rowsPerPage,
+					limit: rowsPerPage,
+				})
+			);
+			if (error.error) throw error;
+			return error;
+		} catch (error) {
+			console.error('Error:', error);
+			throw error;
+		}
+	}
+
+	return (
+		<>
+			<div className="w-full flex flex-col">
+				<FuseScrollbars className="flex-grow overflow-x-auto">
+					<Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
+						<GuiasTableHead
+							page={page}
+							rowsPerPage={rowsPerPage}
+							selectedProductIds={selected}
+							order={order}
+							onSelectAllClick={handleSelectAllClick}
+							onRequestSort={handleRequestSort}
+							rowCount={data.length}
+							onMenuItemClick={handleDeselect}
+						/>
+
+						<TableBody>
+							{_.orderBy(
+								data,
+								[
+									o => {
+										switch (order.id) {
+											case 'categories': {
+												return o.categories[0];
+											}
+											default: {
+												return o[order.id];
+											}
+										}
+									},
+								],
+								[order.direction]
+							)
+								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+								.map(n => {
+									const isSelected = selected.indexOf(n.id) !== -1;
+									return (
+										<TableRow
+											style={n.anulado ? { backgroundColor: '#ffd5d5' } : {}}
+											className="h-72 cursor-pointer"
+											hover
+											tabIndex={-1}
+											key={n.id}
+										>
+											<TableCell className="p-4 md:p-16" component="th" scope="row" align="left">
+												{n.nGuia}
+											</TableCell>
+
+											<TableCell className="p-4 md:p-16" component="th" scope="row" align="left">
+												{formatDate(n.fechaRegistro || n.created_at)}
+											</TableCell>
+
+											<TableCell className="p-4 md:p-16" component="th" scope="row" align="left">
+												{n.destino}
+											</TableCell>
+
+											<TableCell className="p-4 md:p-16" component="th" scope="row" align="left">
+												<div
+													style={{
+														width: '100%',
+														display: 'flex',
+														flexDirection: 'column',
+														alignItems: 'start',
+														justifyContent: 'center',
+														gap: '5px',
+													}}
+												>
+													{n.registrosSalidaAlmacenTelas?.map(e => (
+														<div>- {e.nNota}</div>
+													))}
+												</div>
+											</TableCell>
+
+											<TableCell className="p-4 md:p-16" component="th" scope="row" align="center">
+												<Button
+													startIcon={<RemoveRedEyeIcon />}
+													variant="contained"
+													size="small"
+													color="primary"
+													onClick={() => {
+														setOpenModal(true);
+														setDataModal(n);
+													}}
+												>
+													Ver
+												</Button>
+											</TableCell>
+										</TableRow>
+									);
+								})}
+						</TableBody>
+					</Table>
+				</FuseScrollbars>
+
+				<TablePagination
+					className="flex-shrink-0 border-t-1"
+					component="div"
+					count={totalIngresos}
+					rowsPerPage={rowsPerPage}
+					page={page}
+					backIconButtonProps={{
+						'aria-label': 'Previous Page',
+					}}
+					nextIconButtonProps={{
+						'aria-label': 'Next Page',
+					}}
+					onPageChange={handleChangePage}
+					onRowsPerPageChange={handleChangeRowsPerPage}
+				/>
+			</div>
+		</>
+	);
+}
+
+export default withRouter(GuiasTable);

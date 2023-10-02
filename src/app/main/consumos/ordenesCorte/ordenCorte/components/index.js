@@ -1,0 +1,16 @@
+export { default as CantidadesTizados } from './cantidades';
+export { default as CheckPanios } from './checkPanios';
+export { default as Color } from './color';
+export { default as Complementos } from './complementos';
+export { default as DatoTelaReal } from './datoTelaReal';
+export { default as Estilos } from './estilos';
+export { default as Fecha } from './fecha';
+export { default as Molde } from './molde';
+export { default as ObservacionGeneral } from './observacionGeneral';
+export { default as Partidas } from './partidas';
+export { default as Piezas } from './piezas';
+export { default as Prenda } from './prenda';
+export { default as Produccion } from './produccion';
+export { default as Telas } from './telas';
+export { default as TextFieldValue } from './textFieldValue';
+export { default as Tizado } from './tizado';
