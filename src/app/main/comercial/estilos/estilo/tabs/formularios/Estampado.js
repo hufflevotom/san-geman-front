@@ -11,7 +11,7 @@ import { useState } from 'react';
 /* eslint-disable import/prefer-default-export */
 const { TextField, MenuItem, Icon, IconButton, Autocomplete } = require('@mui/material');
 
-export const EstampadoForm = ({ disabled }) => {
+export const EstampadoForm = ({ disabled, estampados }) => {
 	const methods = useFormContext();
 	const { control, formState, watch } = methods;
 	const { errors } = formState;
@@ -46,6 +46,7 @@ export const EstampadoForm = ({ disabled }) => {
 									valInicial={value}
 									colores={colores}
 									disabled={disabled}
+									estampados={estampados}
 								/>
 							);
 						});
@@ -109,10 +110,9 @@ export const EstampadoForm = ({ disabled }) => {
 	);
 };
 
-const FormData = ({ errors, data, onChange, valInicial, colores, disabled }) => {
+const FormData = ({ errors, data, onChange, valInicial, colores, disabled, estampados }) => {
 	const [nombre, setNombre] = useState(data.nombre);
 	const [descripcion, setDescripcion] = useState(data.descripcion);
-	const [ubicacion, setUbicacion] = useState(data.ubicacion);
 
 	const actualizar = (nnn, titulo) => {
 		// eslint-disable-next-line no-restricted-syntax
@@ -162,36 +162,14 @@ const FormData = ({ errors, data, onChange, valInicial, colores, disabled }) => 
 					onChange([...valInicial]);
 				}}
 			>
-				<MenuItem value="Bolsillo" key="Bolsillo">
-					Estampado Bolsillo
-				</MenuItem>
-				<MenuItem value="Delantero" key="Delantero">
-					Estampado Delantero (Front)
-				</MenuItem>
-				<MenuItem value="Espalda" key="Espalda">
-					Estampado Espalda (Back)
-				</MenuItem>
-				<MenuItem value="Manga" key="Manga">
-					Estampado Manga
-				</MenuItem>
-				<MenuItem value="Etiqueta" key="Etiqueta">
-					Estampado Etiqueta
-				</MenuItem>
-				<MenuItem value="Full" key="Full">
-					Estampado Full Cobertura
-				</MenuItem>
-				<MenuItem value="Transfer" key="Transfer">
-					Estampado Simulación de Transfer
-				</MenuItem>
-				<MenuItem value="Manga Derecha" key="Manga Derecha">
-					Estampado Manga Derecha
-				</MenuItem>
-				<MenuItem value="Manga Izquierda" key="Manga Izquierda">
-					Estampado Manga Izquierda
-				</MenuItem>
-				<MenuItem value="Otros" key="Otros">
+				{estampados.map(option => (
+					<MenuItem value={option.value} key={option.value}>
+						{option.label}
+					</MenuItem>
+				))}
+				{/* <MenuItem value="Otros" key="Otros">
 					Otros
-				</MenuItem>
+				</MenuItem> */}
 			</TextField>
 			<TextField
 				disabled={disabled}

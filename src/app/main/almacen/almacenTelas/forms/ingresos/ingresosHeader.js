@@ -108,16 +108,21 @@ function IngresoHeader({ tipo }) {
 
 				body.proveedorId = body.proveedor?.id;
 				body.detallesProductosIngresosAlmacenesTelas = arreglo;
+				// if (
+				// 	body.tipoOperacion === 'Ingreso con Orden de Producción (OP)' ||
+				// 	body.tipoOperacion.value === 'Ingreso con Orden de Producción (OP)'
+				// ) {
 				if (
-					body.tipoOperacion === 'Ingreso con Orden de Producción (OP)' ||
-					body.tipoOperacion.value === 'Ingreso con Orden de Producción (OP)'
+					(body.tipoOperacion === 'Ingreso con Orden de Producción (OP)' ||
+						body.tipoOperacion.value === 'Ingreso con Orden de Producción (OP)') &&
+					!body.ordenProduccion
 				) {
-					if (body.ordenProduccion) {
-						body.produccionId = body.ordenProduccion?.id;
-					} else {
-						throw { payload: { message: 'Seleccione una orden de producción' } };
-					}
+					throw { payload: { message: 'Seleccione una orden de producción' } };
 				}
+				if (body.ordenProduccion) {
+					body.produccionId = body.ordenProduccion?.id;
+				}
+				// }
 			} else {
 				body.detalleTabla?.forEach(detalle => {
 					if (

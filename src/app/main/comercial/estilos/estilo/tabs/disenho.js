@@ -16,7 +16,7 @@ import { BordadoForm } from './formularios/Bordado';
 import { LavanderiaForm } from './formularios/Lavanderia';
 import { ImagenesReferencialesForm } from './formularios/ImagenesReferenciales';
 
-function Disenho({ disabled, accion }) {
+function Disenho({ disabled, accion, bordados, estampados }) {
 	const [telaComplemento, setTelaComplemento] = useState(false);
 	const [estampado, setEstampado] = useState(false);
 	const [bordado, setBordado] = useState(false);
@@ -427,7 +427,7 @@ function Disenho({ disabled, accion }) {
 					style={{ display: !estampado ? 'none' : 'flex' }}
 					className="flex flex-col sm:flex-col mr-24 sm:mr-4 pr-16 sm:pr-24"
 				>
-					<EstampadoForm disabled={disabled} />
+					<EstampadoForm disabled={disabled} estampados={estampados} />
 				</div>
 			</div>
 			<br />
@@ -436,7 +436,7 @@ function Disenho({ disabled, accion }) {
 					style={{ display: !bordado ? 'none' : 'flex' }}
 					className="flex flex-col sm:flex-col mr-24 sm:mr-4 pr-16 sm:pr-24"
 				>
-					<BordadoForm disabled={disabled} />
+					<BordadoForm disabled={disabled} bordados={bordados} />
 				</div>
 			</div>
 			<br />

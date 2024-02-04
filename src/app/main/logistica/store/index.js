@@ -3,6 +3,9 @@ import { combineReducers } from '@reduxjs/toolkit';
 import oSCortes from './os-corte/oSCortesSlice';
 import oSCorte from './os-corte/oSCorteSlice';
 
+import ordenServicioGenerales from './ordenServicioGeneral/ordenServicioGeneralesSlice';
+import ordenServicioGeneral from './ordenServicioGeneral/ordenServicioGeneralSlice';
+
 import controlFacturas from './controlFactura/controlFacturasSlice';
 import controlFactura from './controlFactura/controlFacturaSlice';
 
@@ -15,6 +18,9 @@ import vehiculo from './vehiculo/vehiculoSlice';
 const logisticaReducer = combineReducers({
 	oSCortes,
 	oSCorte,
+
+	ordenServicioGenerales,
+	ordenServicioGeneral,
 
 	controlFacturas,
 	controlFactura,

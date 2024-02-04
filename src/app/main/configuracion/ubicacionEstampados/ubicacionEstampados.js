@@ -6,7 +6,6 @@ import reducer from '../store';
 import UbicacionEstampadosHeader from './ubicacionEstampadosHeader';
 import UbicacionEstampadosTable from './ubicacionEstampadosTable';
 
-
 const Root = styled(FusePageCarded)(({ theme }) => ({
 	'& .FusePageCarded-header': {
 		minHeight: 72,
@@ -26,7 +25,13 @@ const Root = styled(FusePageCarded)(({ theme }) => ({
 }));
 
 function UbicacionEstampados() {
-	return <Root header={<UbicacionEstampadosHeader />} content={<UbicacionEstampadosTable />} innerScroll />;
+	return (
+		<Root
+			header={<UbicacionEstampadosHeader />}
+			content={<UbicacionEstampadosTable />}
+			innerScroll
+		/>
+	);
 }
 
 export default withReducer('configuraciones', reducer)(UbicacionEstampados);

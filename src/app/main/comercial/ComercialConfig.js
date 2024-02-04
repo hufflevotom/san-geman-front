@@ -9,6 +9,8 @@ import PedidosConfig from './pedidos/pedidosConfig';
 import ProduccionesConfig from './producciones/produccionesConfig';
 import ProveedoresConfig from './proveedores/proveedoresConfig';
 import RutasConfig from './rutas/rutasConfig';
+import DesarrolloColoresTelaConfig from './desarrollosColoresTela/desarrollosColoresTelaConfig';
+import DesarrolloColoresHiloConfig from './desarrollosColoresHilo/desarrollosColoresHiloConfig';
 
 const ComercialConfig = [
 	ProveedoresConfig,
@@ -22,6 +24,8 @@ const ComercialConfig = [
 	MuestrasPrendasLibresConfig,
 	RutasConfig,
 	OrdenCompraAviosConfig,
+	DesarrolloColoresTelaConfig,
+	DesarrolloColoresHiloConfig,
 ];
 
 export default ComercialConfig;

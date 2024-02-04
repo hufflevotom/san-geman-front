@@ -286,6 +286,20 @@ const navigationConfig = [
 				icon: 'architecture',
 				url: rutasDiccionario.ordenCompraAvios[0],
 			},
+			{
+				id: MODULOS.desarrollosColoresTela,
+				title: modulosDiccionario.comercial[11].titulo,
+				type: 'item',
+				icon: 'architecture',
+				url: rutasDiccionario.desarrollosColoresTela[0],
+			},
+			{
+				id: MODULOS.desarrollosColoresHilo,
+				title: modulosDiccionario.comercial[12].titulo,
+				type: 'item',
+				icon: 'architecture',
+				url: rutasDiccionario.desarrollosColoresHilo[0],
+			},
 		],
 	},
 
@@ -353,6 +367,13 @@ const navigationConfig = [
 				icon: 'file_copy',
 				auth: [],
 				children: [
+					{
+						id: MODULOS.ordenServicioGeneral,
+						title: modulosDiccionario.logistica[4].titulo,
+						type: 'item',
+						icon: 'assignment',
+						url: rutasDiccionario.ordenServicioGeneral[0],
+					},
 					{
 						id: MODULOS.oscorte,
 						title: modulosDiccionario.logistica[0].titulo,
@@ -467,8 +488,15 @@ const navigationConfig = [
 				id: MODULOS.ubicacionEstampados,
 				title: modulosDiccionario.configuracion[3].titulo,
 				type: 'item',
-				icon: 'speed',
+				icon: 'settings',
 				url: rutasDiccionario.ubicacionEstampados[0],
+			},
+			{
+				id: MODULOS.ubicacionBordados,
+				title: modulosDiccionario.configuracion[4].titulo,
+				type: 'item',
+				icon: 'settings',
+				url: rutasDiccionario.ubicacionBordados[0],
 			},
 		],
 	},

@@ -88,6 +88,7 @@ const ModalDetalles = ({ openModal, setOpenModal, dataModal }) => {
 										justifyContent: 'center',
 									}}
 								>
+									{dataTable?.nNota && <h3>Nota: {`${dataTable?.nNota}`}</h3>}
 									{dataTable?.tipoOperacion && (
 										<h3>Tipo de Operación: {`${dataTable?.tipoOperacion}`}</h3>
 									)}

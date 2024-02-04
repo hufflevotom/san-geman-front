@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable no-loop-func */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -78,6 +79,9 @@ const ModalProducciones = ({ visible, data, setVisible }) => {
 	};
 
 	const obtenerConsumoTotal = (telaEstilo, item) => {
+		console.log('----------------------------');
+		console.log('item', item);
+		console.log('telaEstilo', telaEstilo);
 		if (!telaEstilo) return null;
 		const { consumo, unidadMedida } = telaEstilo;
 
@@ -111,7 +115,7 @@ const ModalProducciones = ({ visible, data, setVisible }) => {
 					(acc, curr) =>
 						acc +
 						(telaEstilo.idEstilo === curr.estilo.id &&
-						coloresRelacionadosId.map(color => color.id).includes(curr.color.id)
+						coloresRelacionadosId.map(color => color).includes(curr.color.id)
 							? parseFloat(curr.totalCantidadPorcentaje)
 							: 0),
 					0
@@ -613,7 +617,7 @@ const ModalProducciones = ({ visible, data, setVisible }) => {
 	};
 	const constPading = 8;
 	const border = 1;
-	console.log(tabla);
+
 	return (
 		<Modal
 			aria-labelledby="transition-modal-title"
@@ -674,6 +678,10 @@ const ModalProducciones = ({ visible, data, setVisible }) => {
 									<b>Fecha despacho: </b>
 									{moment(data.fechaDespacho).format('DD/MM/YYYY')}
 								</Typography>
+								<Typography component="p">
+									<b>Marca: </b>
+									{produccion?.marca?.marca || '-'}
+								</Typography>
 							</div>
 						</div>
 						{loading ? (
@@ -698,7 +706,7 @@ const ModalProducciones = ({ visible, data, setVisible }) => {
 									}}
 									id="tabla-exportable"
 								>
-									<TableHead>
+									<TableBody>
 										<TableRow>
 											<TableCell
 												style={{
@@ -893,8 +901,7 @@ const ModalProducciones = ({ visible, data, setVisible }) => {
 												TOTAL
 											</TableCell>
 										</TableRow>
-									</TableHead>
-									<TableBody>
+
 										{(tabla || []).map(fila => {
 											return (
 												<>
