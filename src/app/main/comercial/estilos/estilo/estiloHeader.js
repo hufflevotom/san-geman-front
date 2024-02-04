@@ -15,8 +15,7 @@ import _ from '@lodash';
 import showToast from 'utils/Toast';
 import httpClient from 'utils/Api';
 import { ACCIONES } from 'constants/constantes';
-import { createEstilo, deleteEstilo, updateEstilo } from '../../store/estilo/estiloSlice';
-import { deleteEstilosArray } from '../../store/estilo/estilosSlice';
+import { createEstilo, updateEstilo } from '../../store/estilo/estiloSlice';
 
 function EstiloHeader({ tipo, subCodigo, disabled, accion }) {
 	const dispatch = useDispatch();
@@ -101,52 +100,54 @@ function EstiloHeader({ tipo, subCodigo, disabled, accion }) {
 			const estilosAvios = [];
 
 			if (!data.estilo || data.estilo === '') {
-				throw { payload: { message: 'El estilo es requerido' } };
+				throw new Error('El estilo es requerido');
 			}
 			if (!data.nombre || data.nombre === '') {
-				throw { payload: { message: 'El nombre es requerido' } };
+				throw new Error('El nombre es requerido');
 			}
-			// if (!data.estiloAvios || data.estiloAvios.length === 0) {
-			// 	throw { payload: { message: 'Los avíos son requeridos' } };
-			// } else {
-			data.estiloAvios?.forEach(estiloAvio => {
+
+			const STATIC_FAMILIA_AVIOS = [8, 9, 13, 7];
+
+			data.estiloAvios?.forEach((estiloAvio, index) => {
+				let cantidad;
+				if (estiloAvio.avios?.hilos) {
+					cantidad = 5000 / estiloAvio.cantidadUnidad;
+				} else if ([8, 9].includes(estiloAvio.avios?.familiaAvios.id)) {
+					cantidad = estiloAvio.cantidadUnidad ? 1 / estiloAvio.cantidadUnidad : null;
+				} else {
+					cantidad = estiloAvio.cantidad;
+				}
+
+				let unidadMedidaId;
+				if (estiloAvio.avios?.hilos) {
+					unidadMedidaId = 6;
+				} else if (STATIC_FAMILIA_AVIOS.includes(estiloAvio.avios?.familiaAvios.id)) {
+					unidadMedidaId = 2;
+				} else {
+					unidadMedidaId = estiloAvio.unidadMedida?.id;
+				}
+				console.log(
+					`item: ${index + 1}`,
+					STATIC_FAMILIA_AVIOS.includes(estiloAvio.avios?.familiaAvios.id) ?? estiloAvio
+				);
 				estilosAvios.push({
 					id: typeof estiloAvio.id === 'number' && !subCodigo ? estiloAvio.id : null,
-					cantidad: estiloAvio.avios?.hilos
-						? 5000 / estiloAvio.cantidadUnidad
-						: estiloAvio.avios?.familiaAvios.id === 8
-						? 1 / estiloAvio.cantidadUnidad
-						: estiloAvio.avios?.familiaAvios.id === 9
-						? 1 / estiloAvio.cantidadUnidad
-						: estiloAvio.cantidad,
+					cantidad,
 					tipo: estiloAvio.tipo?.value ? estiloAvio.tipo?.value : estiloAvio.tipo,
 					cantidadUnidad:
 						estiloAvio.avios?.hilos ||
-						estiloAvio.avios?.familiaAvios.id === 8 ||
-						estiloAvio.avios?.familiaAvios.id === 9 ||
-						estiloAvio.avios?.familiaAvios.id === 13 ||
-						estiloAvio.avios?.familiaAvios.id === 7
+						STATIC_FAMILIA_AVIOS.includes(estiloAvio.avios?.familiaAvios.id)
 							? estiloAvio.cantidadUnidad
 							: null,
 					aviosId: estiloAvio.avios?.id,
-					unidadMedidaId: estiloAvio.avios?.hilos
-						? 6
-						: estiloAvio.avios?.familiaAvios.id === 8
-						? 2
-						: estiloAvio.avios?.familiaAvios.id === 9
-						? 2
-						: estiloAvio.avios?.familiaAvios.id === 13
-						? 2
-						: estiloAvio.avios?.familiaAvios.id === 7
-						? 2
-						: estiloAvio.unidadMedida?.id,
+					unidadMedidaId,
 					coloresId: estiloAvio.colores ? estiloAvio.colores.map(c => c.id) : [],
 				});
 			});
-			// }
+
 			//! Comentar si el cliente no es requerido
 			if (!data.cliente || data.cliente === null) {
-				throw { payload: { message: 'El cliente es requerido' } };
+				throw new Error('El cliente es requerido');
 			}
 			if (data.cliente) {
 				data.clienteId = data.cliente.id;
@@ -154,14 +155,14 @@ function EstiloHeader({ tipo, subCodigo, disabled, accion }) {
 
 			//! Comentar si la marca no es requerida
 			if (!data.marca || data.marca === null) {
-				throw { payload: { message: 'La marca es requerida' } };
+				throw new Error('La marca es requerida');
 			}
 			if (data.marca) {
 				data.marcaId = data.marca.id;
 			}
 
 			if (!data.rutasEstilos || data.rutasEstilos.length === 0) {
-				throw { payload: { message: 'Las rutas son requeridas' } };
+				throw new Error('Las rutas son requeridas');
 			} else {
 				data.rutasEstilos?.forEach(rt => {
 					arrayRutas.push({
@@ -172,12 +173,12 @@ function EstiloHeader({ tipo, subCodigo, disabled, accion }) {
 				});
 			}
 
-			if (!data.telaPrincipal || !data.telaPrincipal.tela) {
-				throw { payload: { message: 'La tela principal es requerida' } };
+			if (!data?.telaPrincipal?.tela) {
+				throw new Error('La tela principal es requerida');
 			} else if (!data.telaPrincipal.consumo) {
-				throw { payload: { message: 'El consumo de la tela principal es requerido' } };
+				throw new Error('El consumo de la tela principal es requerido');
 			} else if (!data.telaPrincipal.colores || data.telaPrincipal.colores.length === 0) {
-				throw { payload: { message: 'Los colores de la tela principal son requeridos' } };
+				throw new Error('Los colores de la tela principal son requeridos');
 			} else {
 				data.telaPrincipal &&
 					arrayTelas.push({
@@ -223,12 +224,12 @@ function EstiloHeader({ tipo, subCodigo, disabled, accion }) {
 							colorId: bordado.color ? bordado.color?.id : null,
 						});
 
-						if (bordado && bordado.file) {
+						if (bordado?.file) {
 							imgsBordados.push({
 								tipo: bordado.tipo,
 								nombre: bordado.nombre,
 								descripcion: bordado.descripcion,
-								colorId: bordado.color ? bordado.color?.id : null,
+								colorId: bordado.color?.id ?? null,
 								file: bordado.file,
 							});
 						}
@@ -246,7 +247,7 @@ function EstiloHeader({ tipo, subCodigo, disabled, accion }) {
 							descripcion: estampado.descripcion,
 							colorId: estampado.color ? estampado.color?.id : null,
 						});
-						if (estampado && estampado.file) {
+						if (estampado?.file) {
 							imgsEstampados.push({
 								tipo: estampado.tipo,
 								nombre: estampado.nombre,
@@ -265,7 +266,7 @@ function EstiloHeader({ tipo, subCodigo, disabled, accion }) {
 					colorId: imgRef?.id,
 				}));
 				data.imagenesReferenciales?.forEach(imgRef => {
-					if (imgRef && imgRef.file) {
+					if (imgRef?.file) {
 						imgsReferenciales.push({
 							colorId: imgRef?.id,
 							file: imgRef.file,
@@ -279,7 +280,7 @@ function EstiloHeader({ tipo, subCodigo, disabled, accion }) {
 			}
 
 			if (!data.prenda || data.prenda === null) {
-				throw { payload: { message: 'El tipo de prenda es requerido' } };
+				throw new Error('El tipo de prenda es requerido');
 			}
 
 			data.estilosAvios = estilosAvios;
@@ -318,7 +319,7 @@ function EstiloHeader({ tipo, subCodigo, disabled, accion }) {
 				errorAvios.forEach(e => {
 					toast.error(`No se puede usar el avío: ${e}`);
 				});
-				throw { payload: { message: 'Error en avíos' } };
+				throw new Error('Error en avíos');
 			} else {
 				if (tipo === 'nuevo') {
 					obj.data.dependencia = obj.data.estilo;
@@ -327,7 +328,7 @@ function EstiloHeader({ tipo, subCodigo, disabled, accion }) {
 					if (valido) {
 						error = await dispatch(createEstilo(obj));
 					} else {
-						throw { payload: { message: 'El estilo ya existe' } };
+						throw new Error('El estilo ya existe');
 					}
 					if (error.error) throw error;
 				} else if (subCodigo) {
@@ -349,16 +350,6 @@ function EstiloHeader({ tipo, subCodigo, disabled, accion }) {
 			console.error('Error:', error);
 			throw error;
 		}
-	}
-
-	async function handleRemoveEstilo() {
-		const val = await dispatch(deleteEstilo());
-		const response = await dispatch(deleteEstilosArray(val.payload));
-		if (response.error) {
-			throw response.error;
-		}
-		navigate('/comercial/estilos');
-		return val;
 	}
 
 	useEffect(() => {
@@ -394,9 +385,6 @@ function EstiloHeader({ tipo, subCodigo, disabled, accion }) {
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
 								{estilo && subCodigo ? `${dependencia}-${subCodigo}` : estilo || 'Nuevo Estilo'}
 							</Typography>
-							<Typography variant="caption" className="font-medium">
-								{/* 	{prenda ? `${prenda.codigo} - ${prenda.nombre}` : null} */}
-							</Typography>
 						</motion.div>
 					</div>
 				</div>
@@ -418,18 +406,6 @@ function EstiloHeader({ tipo, subCodigo, disabled, accion }) {
 						Nueva versión
 					</Button>
 				) : null}
-				{/* {tipo !== 'nuevo' && !subCodigo ? (
-					<Button
-						className="whitespace-nowrap mx-4"
-						variant="contained"
-						color="secondary"
-						onClick={handleRemoveEstilo}
-						disabled={disabled}
-						startIcon={<Icon className="hidden sm:flex">delete</Icon>}
-					>
-						Eliminar
-					</Button>
-				) : null} */}
 				{subCodigo && (
 					<span
 						style={{

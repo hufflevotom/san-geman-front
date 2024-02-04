@@ -41,6 +41,14 @@ export const rutasDiccionario = {
 	],
 	ordenCompraTelas: ['/comercial/orden-compra-telas', '/comercial/orden-compra-telas/:id'],
 	ordenCompraAvios: ['/comercial/orden-compra-avios', '/comercial/orden-compra-avios/:id'],
+	desarrollosColoresTela: [
+		'/comercial/desarrollo-color-tela',
+		'/comercial/desarrollo-color-tela/:id',
+	],
+	desarrollosColoresHilo: [
+		'/comercial/desarrollo-color-hilo',
+		'/comercial/desarrollo-color-hilo/:id',
+	],
 	// USUARIOS
 	usuarios: ['/usuarios', '/usuarios/:id'],
 	roles: ['/roles', '/roles/:id'],
@@ -49,7 +57,11 @@ export const rutasDiccionario = {
 	almacenes: ['/configuracion/almacenes', '/configuracion/almacenes/:id'],
 	unidades: ['/configuracion/unidades', '/configuracion/unidades/:id'],
 	metodosPago: ['/configuracion/metodos-pago', '/configuracion/metodos-pago/:id'],
-	ubicacionEstampados: ['/configuracion/ubicacion-estampados', '/configuracion/ubicacion-estampados/:id'],
+	ubicacionEstampados: [
+		'/configuracion/ubicacion-estampados',
+		'/configuracion/ubicacion-estampados/:id',
+	],
+	ubicacionBordados: ['/configuracion/ubicacion-bordados', '/configuracion/ubicacion-bordados/:id'],
 	// ALMACEN
 	almacenTelas: ['/almacen/telas', '/almacen/telas/:tipo', '/almacen/telas/:tipo/:id'],
 	almacenAvios: ['/almacen/avios', '/almacen/avios/:tipo', '/almacen/avios/:tipo/:id'],
@@ -61,6 +73,10 @@ export const rutasDiccionario = {
 	// CONSUMOS Y MODELAJE
 	ocorte: ['/consumos-modelaje/ordenes-corte', '/consumos-modelaje/ordenes-corte/:id'],
 	// LOGISTICA
+	ordenServicioGeneral: [
+		'/logistica/ordenes-servicio-general',
+		'/logistica/ordenes-servicio-general/:id',
+	],
 	oscorte: ['/logistica/ordenes-servicio-corte', '/logistica/ordenes-servicio-corte/:id'],
 	controlFactura: ['/logistica/control-factura', '/logistica/control-factura/:id'],
 	guiaRemision: ['/logistica/guia-remision', '/logistica/guia-remision/:id'],
@@ -100,6 +116,8 @@ export const modulosDiccionario = {
 		{ modulo: MODULOS.ordenCompraAvios, titulo: 'Órdenes de Compra de Avios' },
 		{ modulo: MODULOS.muestrasTelasLibres, titulo: 'O.M. de Telas Libres (OMTL)' },
 		{ modulo: MODULOS.muestrasPrendasLibres, titulo: 'O.M. de Prendas Libres (OMPL)' },
+		{ modulo: MODULOS.desarrollosColoresTela, titulo: 'S.D. Colores para Telas (SDCT)' },
+		{ modulo: MODULOS.desarrollosColoresHilo, titulo: 'S.D. Colores para Hilos (SDCH)' },
 	],
 	usuarios: [
 		{ modulo: MODULOS.usuarios, titulo: 'Usuarios' },
@@ -111,6 +129,7 @@ export const modulosDiccionario = {
 		{ modulo: MODULOS.unidades, titulo: 'Unidades de Medida' },
 		{ modulo: MODULOS.metodosPago, titulo: 'Métodos de Pago' },
 		{ modulo: MODULOS.ubicacionEstampados, titulo: 'Ubicación de estampados' },
+		{ modulo: MODULOS.ubicacionBordados, titulo: 'Ubicación de bordados' },
 	],
 	almacen: [
 		{ modulo: MODULOS.almacenTelas, titulo: 'Almacen de Telas' },
@@ -128,6 +147,7 @@ export const modulosDiccionario = {
 		{ modulo: MODULOS.controlFactura, titulo: 'Control de Facturas' },
 		{ modulo: MODULOS.guiaRemision, titulo: 'Guías de Remisión' },
 		{ modulo: MODULOS.vehiculo, titulo: 'Vehículos' },
+		{ modulo: MODULOS.ordenServicioGeneral, titulo: 'Órden de Servicio General' },
 	],
 	reporte: [{ modulo: MODULOS.estadoOp, titulo: 'Estado OP' }],
 	cotizacion: [

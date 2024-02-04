@@ -1,6 +1,6 @@
 import Button from '@mui/material/Button';
 import Icon from '@mui/material/Icon';
-import SpeedIcon from '@mui/icons-material/Speed';
+import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 import Input from '@mui/material/Input';
 import Paper from '@mui/material/Paper';
 import { ThemeProvider } from '@mui/material/styles';
@@ -9,17 +9,19 @@ import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { selectMainTheme } from 'app/store/fuse/settingsSlice';
-import { setUbicacionEstampadosSearchText } from '../store/ubicacionEstampado/ubicacionEstampadoSlice';
+import { setUbicacionEstampadosSearchText } from '../store/ubicacionEstampado/ubicacionEstampadosSlice';
 
 function UbicacionEstampadosHeader(props) {
 	const dispatch = useDispatch();
-	const searchText = useSelector(({ configuraciones }) => configuraciones.ubicacionEstampados.searchText);
+	const searchText = useSelector(
+		({ configuraciones }) => configuraciones.ubicacionEstampados.searchText
+	);
 	const mainTheme = useSelector(selectMainTheme);
 
 	return (
 		<div className="flex flex-1 w-full items-center justify-between">
 			<div className="flex items-center">
-				<SpeedIcon fontSize="large" />
+				<SettingsApplicationsIcon fontSize="large" />
 				<Typography
 					component={motion.span}
 					initial={{ x: -20 }}
@@ -63,7 +65,7 @@ function UbicacionEstampadosHeader(props) {
 			>
 				<Button
 					component={Link}
-					to="/configuracion/ubicacionEstampados/nuevo"
+					to="/configuracion/ubicacion-estampados/nuevo"
 					className="whitespace-nowrap"
 					variant="contained"
 					color="secondary"

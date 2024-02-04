@@ -5,12 +5,11 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 
 /* eslint-disable import/prefer-default-export */
 const { TextField, MenuItem, Icon, IconButton, Autocomplete } = require('@mui/material');
 
-export const BordadoForm = ({ disabled }) => {
+export const BordadoForm = ({ disabled, bordados }) => {
 	const methods = useFormContext();
 	const { control, formState, watch } = methods;
 	const { errors } = formState;
@@ -45,6 +44,7 @@ export const BordadoForm = ({ disabled }) => {
 									valInicial={value}
 									colores={colores}
 									disabled={disabled}
+									bordados={bordados}
 								/>
 							);
 						});
@@ -108,7 +108,7 @@ export const BordadoForm = ({ disabled }) => {
 	);
 };
 
-const FormData = ({ errors, data, onChange, valInicial, colores, disabled }) => {
+const FormData = ({ errors, data, onChange, valInicial, colores, disabled, bordados }) => {
 	const [nombre, setNombre] = useState(data.nombre);
 	const [hilo, setHilo] = useState(data.hilo);
 	const [colorHilo, setColorHilo] = useState(data.colorHilo);
@@ -176,23 +176,12 @@ const FormData = ({ errors, data, onChange, valInicial, colores, disabled }) => 
 							onChange([...valInicial]);
 						}}
 					>
-						<MenuItem value="Delantero">Bordado Delantero</MenuItem>
-						<MenuItem value="Bolsillos">Bordado Bolsillos</MenuItem>
-						<MenuItem value="Pieza delantera">Bordado Pieza Delantera</MenuItem>
-						<MenuItem value="Manga Derecha">Bordado Manga Derecha</MenuItem>
-						<MenuItem value="Manga Izquierda">Bordado Manga Izquierda</MenuItem>
-						<MenuItem value="Canesú Espalda">Bordado Pieza Canesú Espalda</MenuItem>
-						<MenuItem value="Canesú Delantero">Bordado Pieza Canesú Delantero</MenuItem>
-						<MenuItem value="Espalda Superior">Bordado en Espalda Superior</MenuItem>
-						<MenuItem value="Bolsillo Izquierdo Prenda Puesta">
-							Bordado en Pieza Bolsillo Izquierdo Prenda Puesta
-						</MenuItem>
-						<MenuItem value="Pieza en Pecho Izquierdo">
-							Bordado en Pieza en Pecho Izquierdo
-						</MenuItem>
-						<MenuItem value="Pieza Pecho Izquierdo">Bordado en Pieza en Pecho Izquierdo</MenuItem>
-						<MenuItem value="Pieza Manga Izquierda"> Bordado en Pieza en Manga Izquierda</MenuItem>
-						<MenuItem value="Otros">Otros</MenuItem>
+						{bordados.map(option => (
+							<MenuItem value={option.value} key={option.value}>
+								{option.label}
+							</MenuItem>
+						))}
+						{/* <MenuItem value="Otros">Otros</MenuItem> */}
 					</TextField>
 
 					<TextField

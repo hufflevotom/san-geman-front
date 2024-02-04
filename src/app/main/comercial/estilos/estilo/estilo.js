@@ -19,6 +19,8 @@ import useQueryParams from 'utils/useQueryParams';
 
 import { ACCIONES, MODULOS } from 'constants/constantes';
 
+import { getAllBordadosService, getAllEstampadosService } from 'app/services/services';
+
 import reducer from '../../store';
 import { getEstiloId, newEstilo, resetEstilo } from '../../store/estilo/estiloSlice';
 
@@ -81,6 +83,9 @@ const Estilo = () => {
 	const [subCodigo, setSubCodigo] = useState();
 	const [noExisteEstilo, setNoExisteEstilo] = useState(false);
 	const [accionActual, setAccionActual] = useState();
+	const [bordados, setBordados] = useState([]);
+	const [estampados, setEstampados] = useState([]);
+
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: {},
@@ -147,6 +152,15 @@ const Estilo = () => {
 			setNoExisteEstilo(false);
 		};
 	}, [dispatch]);
+
+	useEffect(() => {
+		getAllBordadosService().then(bordadosRes => {
+			setBordados(bordadosRes[0]);
+		});
+		getAllEstampadosService().then(estampadosRes => {
+			setEstampados(estampadosRes[0]);
+		});
+	}, []);
 
 	function handleTabChange(event, value) {
 		setTabValue(value);
@@ -224,7 +238,12 @@ const Estilo = () => {
 						</div>
 						<div className={tabValue !== 1 ? 'hidden' : ''}>
 							<div className="mx-6 mb-16 mt-16 text-base">Tela Principal</div>
-							<Disenho disabled={accionActual === ACCIONES.VISUALIZAR} accion={accionActual} />
+							<Disenho
+								disabled={accionActual === ACCIONES.VISUALIZAR}
+								accion={accionActual}
+								bordados={bordados}
+								estampados={estampados}
+							/>
 						</div>
 						<div className={tabValue !== 2 ? 'hidden' : ''}>
 							{/* <div className="mx-6 mb-16 mt-16 text-base">Ruta</div> */}

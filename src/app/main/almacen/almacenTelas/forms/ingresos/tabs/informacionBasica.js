@@ -164,7 +164,7 @@ function InformacionBasica() {
 									if (newValue) {
 										const { label, ...valor } = newValue;
 										onChange(valor);
-										setOrdenP(newValue.id === 3);
+										setOrdenP(newValue.id !== 2);
 									} else {
 										onChange(null);
 									}

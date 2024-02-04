@@ -88,7 +88,7 @@ export default function ModalTable({ modalOpen, setModalOpen, data, setDataSelec
 		if (dataOC.produccion) {
 			arrayFiltered = await filtroIngresosOP(dataOC, arrayUnique);
 		}
-
+		console.log('HV.Hello World', arrayFiltered);
 		setProduccion(arrayFiltered);
 		setLoading(false);
 	};
@@ -107,8 +107,8 @@ export default function ModalTable({ modalOpen, setModalOpen, data, setDataSelec
 					array.push({
 						telaId: ingreso.producto.tela.id,
 						colorId: ingreso.producto.color.id,
-						cantidad: ingreso.cantidad,
-						cantidadRollos: ingreso.cantidadRollos,
+						cantidad: parseFloat(ingreso.cantidad),
+						cantidadRollos: parseFloat(ingreso.cantidadRollos),
 					});
 				});
 			});
@@ -124,7 +124,7 @@ export default function ModalTable({ modalOpen, setModalOpen, data, setDataSelec
 					if (origen.cantidad > cantidad) {
 						arrayFiltered.push({
 							...origen,
-							cantidad: origen.cantidad - cantidad,
+							cantidad: (parseFloat(origen.cantidad) - cantidad).toFixed(3),
 						});
 					}
 				} else {

@@ -12,6 +12,9 @@ import metodosPago from './metodoPago/metodosPagoSlice';
 import ubicacionEstampado from './ubicacionEstampado/ubicacionEstampadoSlice';
 import ubicacionEstampados from './ubicacionEstampado/ubicacionEstampadosSlice';
 
+import ubicacionBordado from './ubicacionBordado/ubicacionBordadoSlice';
+import ubicacionBordados from './ubicacionBordado/ubicacionBordadosSlice';
+
 const configuracionReducer = combineReducers({
 	unidad,
 	unidades,
@@ -24,6 +27,9 @@ const configuracionReducer = combineReducers({
 
 	ubicacionEstampado,
 	ubicacionEstampados,
+
+	ubicacionBordado,
+	ubicacionBordados,
 });
 
 export default configuracionReducer;

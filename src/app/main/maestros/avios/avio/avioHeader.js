@@ -2,6 +2,7 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-throw-literal */
+import { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import Icon from '@mui/material/Icon';
 import { useTheme } from '@mui/material/styles';
@@ -18,6 +19,7 @@ import { createAvio, deleteAvio, updateAvio } from '../../store/avios/avioSlice'
 import { deleteAviosArray } from '../../store/avios/aviosSlice';
 
 function AvioHeader({ tipo, generar, imagenes }) {
+	const [codigoHeader, setCodigoHeader] = useState('');
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { formState, watch, getValues } = methods;
@@ -30,7 +32,7 @@ function AvioHeader({ tipo, generar, imagenes }) {
 
 	const existeHilos = getValues();
 
-	const getCodigo = () => {
+	const getCodigo = async () => {
 		let codigoParseado;
 
 		if (familia) {
@@ -45,10 +47,9 @@ function AvioHeader({ tipo, generar, imagenes }) {
 
 		if (existeHilos?.hilos) {
 			if (tipo === 'nuevo') {
-				httpClient.get(`maestro/familia-avios/1`).then(response => {
-					const data = response.data.body;
-					codigoParseado = `${data.prefijo}-${(data.correlativo + 1).toString().padStart(4, '0')}`;
-				});
+				const response = await httpClient.get(`maestro/familia-avios/1`);
+				const data = response.data.body;
+				codigoParseado = `${data.prefijo}-${(data.correlativo + 1).toString().padStart(4, '0')}`;
 			} else {
 				codigoParseado = codigo.toString();
 			}
@@ -119,7 +120,7 @@ function AvioHeader({ tipo, generar, imagenes }) {
 				data.unidadId = data.unidadMedida.id;
 				data.unidadSecundariaId = data.unidadMedidaSecundaria.id;
 				data.unidadCompraId = data.unidadMedidaCompra.id;
-				data.codigo = getCodigo();
+				data.codigo = await getCodigo();
 
 				if (data.color) data.colorId = data.color.id;
 
@@ -198,7 +199,6 @@ function AvioHeader({ tipo, generar, imagenes }) {
 				data.unidadId = data.unidadMedida.id;
 				data.unidadSecundariaId = data.unidadMedidaSecundaria.id;
 				data.unidadCompraId = data.unidadMedidaCompra.id;
-				data.codigo = getCodigo();
 
 				if (data.color) data.colorId = data.color.id;
 
@@ -250,6 +250,12 @@ function AvioHeader({ tipo, generar, imagenes }) {
 		}
 	}
 
+	useEffect(() => {
+		(async () => {
+			setCodigoHeader(await getCodigo());
+		})();
+	}, []);
+
 	return (
 		<div className="flex flex-1 w-full items-center justify-between">
 			<div className="flex flex-col items-start max-w-full min-w-0">
@@ -290,7 +296,7 @@ function AvioHeader({ tipo, generar, imagenes }) {
 								{descripcion || 'Nuevo Avios'}
 							</Typography>
 							<Typography variant="caption" className="font-medium">
-								{getCodigo()}
+								{codigoHeader}
 							</Typography>
 						</motion.div>
 					</div>

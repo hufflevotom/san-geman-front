@@ -36,6 +36,12 @@ import ordenCompraAvio from './ordenCompraAvio/ordenCompraAvioSlice';
 import infoPedido from './pedido/resumenPedidoSlice';
 import helpers from './pedido/helpers';
 
+import desarrollosColoresTela from './desarrolloColorTela/desarrollosColoresTelaSlice';
+import desarrolloColorTela from './desarrolloColorTela/desarrolloColorTelaSlice';
+
+import desarrollosColoresHilo from './desarrolloColorHilo/desarrollosColoresHiloSlice';
+import desarrolloColorHilo from './desarrolloColorHilo/desarrolloColorHiloSlice';
+
 const comercialReducer = combineReducers({
 	proveedores,
 	proveedor,
@@ -73,6 +79,12 @@ const comercialReducer = combineReducers({
 	infoPedido,
 
 	helpers,
+
+	desarrollosColoresTela,
+	desarrolloColorTela,
+
+	desarrollosColoresHilo,
+	desarrolloColorHilo,
 });
 
 export default comercialReducer;

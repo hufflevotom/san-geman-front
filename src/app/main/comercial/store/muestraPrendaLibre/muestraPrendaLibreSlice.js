@@ -21,9 +21,13 @@ export const createMuestraPrendaLibre = createAsyncThunk(
 						formData.append('imagen', f.file);
 
 						// eslint-disable-next-line no-await-in-loop
-						await httpClient.put(`comercial/muestras-prendas-libres/imagen/${data.id}`, formData, {
-							'Content-Type': 'multipart/form-data',
-						});
+						await httpClient.put(
+							`comercial/muestras-prendas-libres/imagen/${data.body.id}`,
+							formData,
+							{
+								'Content-Type': 'multipart/form-data',
+							}
+						);
 					}
 				}
 			}

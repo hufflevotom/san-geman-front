@@ -62,7 +62,7 @@ function AlmacenesTable(props) {
 		debouncedFetchData(); // Llamar a la versión debounced de fetchData
 		return debouncedFetchData.cancel; // Cancelar la llamada si cambia el texto o se desmonta el componente
 	}, [dispatch, page, rowsPerPage, searchText]);
-	
+
 	useEffect(() => {
 		setData(almacenes);
 	}, [almacenes]);

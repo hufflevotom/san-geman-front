@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
 import debounce from 'lodash.debounce';
@@ -252,6 +253,18 @@ function OrdenCompraTelasTable() {
 										</TableCell>
 										<TableCell className="p-4 md:p-16" component="th" scope="row">
 											{formatDate(n.fechaEmision)}
+										</TableCell>
+										<TableCell className="p-4 md:p-16" component="th" scope="row">
+											{n.proveedor
+												? n.proveedor.tipo === 'J'
+													? n.proveedor.tipo === 'J'
+														? n.proveedor.razonSocial
+														: `${n.proveedor.apellidoPaterno} ${n.proveedor.apellidoMaterno} ${n.proveedor.nombres}`
+													: `${n.proveedor.apellidoPaterno} ${n.proveedor.apellidoMaterno} ${n.proveedor.nombres}`
+												: '-'}
+										</TableCell>
+										<TableCell className="p-4 md:p-16" component="th" scope="row">
+											{n.produccion?.marca?.marca || '-'}
 										</TableCell>
 										<TableCell className="p-4 md:p-16" component="th" scope="row">
 											{n.produccion ? n.produccion.codigo : '-'}

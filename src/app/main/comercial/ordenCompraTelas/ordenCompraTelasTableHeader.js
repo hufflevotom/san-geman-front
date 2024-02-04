@@ -22,6 +22,20 @@ const rows = [
 		sort: true,
 	},
 	{
+		id: 'proveedor',
+		align: 'left',
+		disablePadding: false,
+		label: 'Proveedor',
+		sort: true,
+	},
+	{
+		id: 'marca',
+		align: 'left',
+		disablePadding: false,
+		label: 'Marca',
+		sort: true,
+	},
+	{
 		id: 'op',
 		align: 'left',
 		disablePadding: false,

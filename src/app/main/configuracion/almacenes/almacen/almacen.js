@@ -8,7 +8,7 @@ import { Link, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useDeepCompareEffect } from '@fuse/hooks';
-import { Button, Tabs, Typography, Tab } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import _ from '@lodash';
 import FuseLoading from '@fuse/core/FuseLoading';
 // import { getModulos } from 'app/store/generales/modulosSlice';
